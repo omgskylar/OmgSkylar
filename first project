@@ -1,0 +1,153 @@
+#include <iostream>
+
+char row[7][10]{};
+int userRow{ 1 };
+int userRow2{ 1 };
+
+void printGrid()
+{
+	for (int iterate{}; iterate < 7; iterate++)
+	{
+		for (int count{}; count < 10; count++)
+		{
+			std::cout << row[iterate][count] << ' ';
+		}
+
+		std::cout << '\n';
+	}
+}
+
+bool checkTrap()
+{
+	if (userRow == 2 && userRow2 == 6)
+		return true;
+	else if (userRow == 4 && userRow2 == 4)
+		return true;
+	else if (userRow == 5 && userRow2 == 6)
+		return true;
+	else
+		return false;
+}
+
+bool checkGoal()
+{
+	if (userRow == 6 && userRow2 == 9)
+		return true;
+	else
+		return false;
+}
+
+void makeGrid()
+{
+
+	for (int iterate{}; iterate < 7; iterate++)
+	{
+		for (int count{}; count < 10; count++)
+		{
+			if ((iterate == userRow) && (count == userRow2))
+			{
+				row[iterate][count] = 'G';
+			}
+			else if ((iterate == 2) && (count == 6))
+			{
+				row[iterate][count] = 'T';
+			}
+			else if ((iterate == 4) && (count == 4))
+			{
+				row[iterate][count] = 'T';
+			}
+			else if ((iterate == 5) && (count == 6))
+			{
+				row[iterate][count] = 'T';
+			}
+			else if ((iterate == 6) && (count == 9))
+			{
+				row[iterate][count] = 'X';
+			}
+			else
+			{
+				row[iterate][count] = '.';
+			}
+		}
+	}
+
+	printGrid();
+}
+
+void moveChar()
+{
+	std::cout << "Would you like to move up, down, left, or right?  ";
+	std::string move{};
+	std::cin >> move;
+
+	if (move == "up")
+	{
+		if (userRow == 0)
+		{
+			std::cout << "You are already as far up as you can go.\n";
+		}
+		else
+			--userRow;
+	}
+	else if (move == "down")
+	{
+		if (userRow == 6)
+		{
+			std::cout << "You are already as far down as you can go.\n";
+		}
+		else
+			++userRow;
+	}
+	else if (move == "left")
+	{
+		if (userRow2 == 0)
+		{
+			std::cout << "You are already as far left as you can go.\n";
+		}
+		else
+			--userRow2;
+	}
+	else if (move == "right")
+	{
+		if (userRow == 9)
+		{
+			std::cout << "You are already as far right as you can go.\n";
+		}
+		else
+			++userRow2;
+	}
+}
+
+
+int main()
+{
+	bool victory{ 0 };
+	bool dead{ 0 };
+
+	while (1)
+	{
+		victory = checkGoal(); //is user on the goal?
+		
+		if (victory)
+		{
+			std::cout << "You win!\n";
+
+			return 0;
+		}
+
+		dead = checkTrap(); //is user on a trap?
+
+		if (dead)
+		{
+			std::cout << "You stepped on a trap and died.\n";
+
+			return 0;
+		}
+
+		makeGrid();
+
+		moveChar();
+	}
+
+	return 0;
+}
